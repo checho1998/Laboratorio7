@@ -20,11 +20,14 @@ package edu.eci.cvds.samples.services.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.sql.SQLException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
 
 /**
  *
@@ -61,12 +64,10 @@ public class MyBatisExample {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
 
         SqlSession sqlss = sessionfact.openSession();
-
-        
-        //Crear el mapper y usarlo: 
-        //ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
-        //cm...
-        
+        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);
+        cm.agregarItemRentadoACliente(123456,5,new Date(2019,10,11),new Date(2019,10,19));
+        //System.out.println(cm.consultarClientes());
+        System.out.println(cm.consultarCliente(123456)); 
         
         
         sqlss.commit();
@@ -77,6 +78,7 @@ public class MyBatisExample {
         
         
     }
+    
 
 
 }

@@ -7,12 +7,12 @@
 <select parameterType="map" id="consultarClientes" resultMap="ClienteResult">
 			select
     
-    c.nombre,
-    c.documento,
-    c.telefono,
-    c.direccion,
-    c.email,
-    c.vetado,
+    c.nombre AS cl_nombre,
+    c.documento AS cl_documento,
+    c.telefono AS cl_telefono,
+    c.direccion AS cl_direccion,
+    c.email AS cl_email,
+    c.vetado AS cl_vetado,
     
     ir.id ,
     ir.fechainiciorenta ,
@@ -24,28 +24,67 @@
     i.fechalanzamiento ,
     i.tarifaxdia ,
     i.formatorenta ,
-    i.genero ,        
-    ti.id ,
-    ti.descripcion 
+    i.genero ,  
+          
+   	ti.id AS tir_id,
+   	ti.descripcion AS rit_descripcion
 
     
     FROM VI_CLIENTES as c 
     left join VI_ITEMRENTADO as ir on c.documento=ir.CLIENTES_documento 
     left join VI_ITEMS as i on ir.ITEMS_id=i.id 
     left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id 
-</select>
-<resultMap type='VI_CLIENTES' id='ClienteResult'>
-    <id property='documento' column='documento'/>
-    <result property='nombre' column='nombre'/>
-    <result property='telefono' column='telefono'/> 
-	<result property='direccion' column='direccion'/>
-    <result property='email' column='email'/>
-	<result property='vetado' column='vetado'/>
-	 <collection property='rentados' ofType='VI_ITEMRENTADO'></collection>
     
-</resultMap>
+</select>
+<select parameterType="map" id="consultarCliente" resultMap="ClienteResult">
+			select
+    
+    c.nombre AS cl_nombre,
+    c.documento AS cl_documento,
+    c.telefono AS cl_telefono,
+    c.direccion AS cl_direccion,
+    c.email AS cl_email,
+    c.vetado AS cl_vetado,
+    
+    ir.id ,
+    ir.fechainiciorenta ,
+    ir.fechafinrenta ,
+    
+    i.id ,
+    i.nombre ,
+    i.descripcion ,
+    i.fechalanzamiento ,
+    i.tarifaxdia ,
+    i.formatorenta ,
+    i.genero ,  
+          
+   	ti.id AS tir_id,
+   	ti.descripcion AS rit_descripcion
 
-<resultMap type='VI_ITEMRENTADO' id='ItemRentadoResult'>
+    
+    FROM VI_CLIENTES as c 
+    left join VI_ITEMRENTADO as ir on c.documento=ir.CLIENTES_documento 
+    left join VI_ITEMS as i on ir.ITEMS_id=i.id 
+    left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id
+    WHERE  #{idcli} = c.documento
+    
+</select>
+
+	<insert parameterType="map" id="agregarItemRentadoACliente" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO VI_ITEMRENTADO (CLIENTES_documento,ITEMS_id,fechainiciorenta,fechafinrenta) VALUES (#{idclie},#{idi},#{feini},#{fefin})
+    </insert>
+    
+<resultMap type="Cliente" id="ClienteResult" >
+        <id property="documento" column="cl_documento"/>
+        <result property="nombre" column="cl_nombre"/>
+        <result property="telefono" column="cl_telefono"/>
+        <result property="direccion" column="cl_direccion"/>
+        <result property="email" column="cl_email"/>
+        <result property="vetado" column="cl_vetado"/>
+        <collection property="rentados" ofType="ItemRentado" resultMap="ItemRentadoResult"/>
+    </resultMap>
+
+<resultMap type='ItemRentado' id='ItemRentadoResult'>
     <id property='id' column='id'/>
     <result property='fechainiciorenta' column='fechainiciorenta'/>
     <result property='fechafinrenta' column='fechafinrenta'/>
@@ -62,10 +101,9 @@
 	<result property='genero' column='genero'/> 
 	<association property="tipo" javaType="TipoItem"></association> 
 </resultMap>
-<resultMap type='TipoItem' id='TipoItemResult'>
-    <id property='id' column='id'/>
-	<result property='descripcion' column='descripcion'/>
-</resultMap>
-
+<resultMap type="TipoItem" id="tipoItemResult">
+        <id property="id" column="tir_id"/>
+        <result property="descripcion" column="tir_descripcion"/>
+    </resultMap>
           	
 </mapper>
