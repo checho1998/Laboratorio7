@@ -78,7 +78,7 @@ public class MyBatisExample {
         System.out.println(im.consultarItem(10321));
         
         sqlss.commit();
-        
+        //perr
         
         sqlss.close();
 
