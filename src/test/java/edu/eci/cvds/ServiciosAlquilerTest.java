@@ -1,4 +1,4 @@
-package edu.eci.cvds.test;
+package edu.eci.cvds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ServiciosAlquilerTest {
     }
 
     @Test
-    public void emptyDB() {
+    public void emptyDB() {	
         qt().forAll(longs().from(1).upTo(1000)).check((documento) -> {
             boolean r = false;
             try {
