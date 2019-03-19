@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title></title>
+
+</h:head>
+<h:body>
+	<h1>Items Rentados</h1>
+	
+	<f:metadata>
+    	<f:viewParam name="documento" value="#{itemRentado.documento}" />
+	</f:metadata>
+	
+	<p:dataTable id="Items_table" var="itemR" value="#{itemRentado.items}" >
+		<p:column headerText="Nombre Item">
+			<h:outputText value="#{itemR.item.nombre}" />
+		</p:column>
+		<p:column headerText="Fecha fin renta">
+			<h:outputText value="#{itemR.fechafinrenta}" />
+		</p:column>
+		<p:column headerText="Multa">
+			<h:outputText value="#{itemRentado.consultarMulta(itemR.item.id)}" />
+		</p:column>
+		
+	</p:dataTable>
+	
+	<p:separator/>
+	<p:separator/>
+	
+	<h:form id="registrarAlquiler">
+		<p:growl id="growl" showDetail="true" sticky="true" />
+		<p:panel header="Registrar Alquiler">
+		<p:remoteCommand name="getCosto" actionListener="#{itemRentado.consultarCosto(id.value,numdias.value)}"  oncomplete="traerCosto(xhr, status, args);"/>
+		
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel value="Digite el codigo del Item:" />
+				<p:inputText binding="#{id}" />
+
+				<p:outputLabel value="Digite numero de dias" />
+				<p:inputText binding="#{numdias}" />
+				
+				<p:inputText value= "#{itemRentado.documento}" binding= "#{documento}" style= "display:none"/>
+				
+				<p:commandButton outcome="registroCliente" value = "Guardar alquiler del item"  
+				actionListener="#{itemRentado.registrarItem(id.value,numdias.value)}" id="boton">
+					<p:confirm header="Confirmacion" message="Acepta el alquiler?" />
+				</p:commandButton>
+		
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<h4 id="costoTotal"> </h4>
+		        	<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+		        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    	</p:confirmDialog>
+
+			</h:panelGrid>
+		
+		
+		</p:panel>
+
+	</h:form>
+	<h:outputScript library="js" name="costo.js"  target="body"/>
+	
+	
+</h:body>
+</html>

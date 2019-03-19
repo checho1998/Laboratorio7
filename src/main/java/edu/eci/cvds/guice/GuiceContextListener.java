@@ -8,8 +8,14 @@ import org.mybatis.guice.datasource.helper.JdbcHelper;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import edu.eci.cvds.sampleprj.dao.ClienteDAO;
+import edu.eci.cvds.sampleprj.dao.ItemDAO;
+import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISClienteDAO;
+import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISItemDao;
 import edu.eci.cvds.samples.services.ServiciosAlquiler;
 import edu.eci.cvds.samples.services.ServiciosAlquilerFactory;
+import edu.eci.cvds.samples.services.impl.ServiciosAlquilerImpl;
+import edu.eci.cvds.samples.services.impl.ServiciosAlquilerItemsStub;
 
 public class GuiceContextListener implements ServletContextListener {
 
@@ -27,9 +33,10 @@ public class GuiceContextListener implements ServletContextListener {
                 setClassPathResource("mybatis-config.xml");
 
                 // TODO Add service class associated to Stub implementation
-                bind(ServiciosAlquiler.class).to(ServiciosAlquilerFactory.class);
-                bind(BBB.class).to(ZZZ.class);
-            }
+                bind(ServiciosAlquiler.class).to(ServiciosAlquilerItemsStub.class);
+                bind(ClienteDAO.class).to(MyBATISClienteDAO.class);
+                bind(ItemDAO.class).to(MyBATISItemDao.class);
+            }	
         });
 
         servletContextEvent.getServletContext().setAttribute(Injector.class.getName(), injector);
