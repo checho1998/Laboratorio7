@@ -73,7 +73,7 @@ public class MyBatisExample {
         //im.insertarItem(iit);
         
         //cm.agregarItemRentadoACliente(123456,5,new Date(2019,10,11),new Date(2019,10,19));
-        //System.out.println(cm.consultarClientes());
+        System.out.println(cm.consultarClientes());
         System.out.println(cm.consultarCliente(123456)); 
         System.out.println(im.consultarItem(12021));
         
