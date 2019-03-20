@@ -1,4 +1,4 @@
-package edu.eci.cvds.test;
+package edu.eci.cvds;
 
 import org.junit.Before;
 import org.mybatis.guice.XMLMyBatisModule;

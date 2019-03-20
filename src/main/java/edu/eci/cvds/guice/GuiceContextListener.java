@@ -10,8 +10,12 @@ import com.google.inject.Injector;
 
 import edu.eci.cvds.sampleprj.dao.ClienteDAO;
 import edu.eci.cvds.sampleprj.dao.ItemDAO;
+import edu.eci.cvds.sampleprj.dao.TipoItemDAO;
+import edu.eci.cvds.sampleprj.dao.ItemRentadoDAO;
 import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISClienteDAO;
 import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISItemDao;
+import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISItemRentadoDAO;
+import edu.eci.cvds.sampleprj.dao.mybatis.MyBATISTipoItemDAO;
 import edu.eci.cvds.samples.services.ServiciosAlquiler;
 import edu.eci.cvds.samples.services.ServiciosAlquilerFactory;
 import edu.eci.cvds.samples.services.impl.ServiciosAlquilerImpl;
@@ -36,6 +40,8 @@ public class GuiceContextListener implements ServletContextListener {
                 bind(ServiciosAlquiler.class).to(ServiciosAlquilerItemsStub.class);
                 bind(ClienteDAO.class).to(MyBATISClienteDAO.class);
                 bind(ItemDAO.class).to(MyBATISItemDao.class);
+                bind(TipoItemDAO.class).to(MyBATISTipoItemDAO.class);
+                bind(ItemRentadoDAO.class).to(MyBATISItemRentadoDAO.class);
             }	
         });
 
