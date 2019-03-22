@@ -30,6 +30,7 @@ public class GuiceContextListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         Injector injector = Guice.createInjector(new XMLMyBatisModule() {
+        	
             @Override
             protected void initialize() {
                 install(JdbcHelper.MySQL);
@@ -42,6 +43,7 @@ public class GuiceContextListener implements ServletContextListener {
                 bind(ItemDAO.class).to(MyBATISItemDao.class);
                 bind(TipoItemDAO.class).to(MyBATISTipoItemDAO.class);
                 bind(ItemRentadoDAO.class).to(MyBATISItemRentadoDAO.class);
+                
             }	
         });
 

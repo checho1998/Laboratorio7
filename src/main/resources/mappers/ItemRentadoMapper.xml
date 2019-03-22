@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemRentadoMapper">
+
+	<resultMap type='ItemRentado' id='ItemRentadoResult'>
+	    <id property='id' column='ITEMRENTADO_id'/>  
+	    <result property='fechainiciorenta' column='fechainiciorenta'/>
+	    <result property='fechafinrenta' column='fechafinrenta'/>
+	    <association property='item' javaType='Item' resultMap='edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper.ItemResult'></association> 
+	</resultMap>
+	
+	<select id="consultarDiasRetraso"  resultType="java.lang.Long">
+		SELECT ((DAY(#{fecha}) - DAY(fechafinrenta))
+			+ (MONTH(#{fecha}) - MONTH(fechafinrenta)) * 30 
+			+ (YEAR(#{fecha}) - YEAR(fechafinrenta)) * 365)
+		FROM VI_ITEMRENTADO
+		WHERE ITEMS_id = #{id};
+	</select>
+	
+	<select id="consultarItemsRentados" parameterType= "map" resultMap="ItemRentadoResult">
+		SELECT DISTINCT (r.id) as ITEMRENTADO_id,
+			fechainiciorenta, 
+			fechafinrenta,
+			i.id ,
+		    i.nombre ,
+		    i.descripcion as ITEM_descripcion,
+		    i.fechalanzamiento ,
+		    i.tarifaxdia ,
+		    i.formatorenta ,
+		    i.genero
+		FROM VI_ITEMRENTADO as r, VI_CLIENTES, VI_ITEMS as i
+		WHERE CLIENTES_documento = #{documento}
+				AND ITEMS_id =  i.id;
+	</select>
+
+</mapper>
